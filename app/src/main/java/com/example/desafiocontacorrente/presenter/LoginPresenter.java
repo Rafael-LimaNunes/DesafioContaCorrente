@@ -1,47 +1,49 @@
 package com.example.desafiocontacorrente.presenter;
 
-import android.widget.EditText;
-
-import com.example.desafiocontacorrente.R;
-import com.example.desafiocontacorrente.contracts.Contract;
-import com.example.desafiocontacorrente.api.RetrofitConfig;
+import com.example.desafiocontacorrente.api.ServiceAccountAPI.CallBack;
+import com.example.desafiocontacorrente.api.ServiceAccountApImpl;
+import com.example.desafiocontacorrente.contracts.LoginContract;
 import com.example.desafiocontacorrente.model.Status;
 
+/**
+ * @author Rafael Lima Nunes de Oliveira
+ */
+public class LoginPresenter implements LoginContract.Presenter {
 
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    LoginContract.View view;
 
-public class LoginPresenter implements Contract.Presenter {
 
-    Contract.View view;
-    EditText email;
-    EditText password;
-
-    public LoginPresenter(Contract.View view, EditText email, EditText password) {
+    public LoginPresenter(LoginContract.View view) {
         this.view = view;
-        this.email = email;
-        this.password = password;
     }
 
+    /**
+     *
+     * @param email
+     * @param password
+     */
     @Override
-    @OnClick(R.id.btnEnter)
-    public void authenticate() {
-        Call<Status> call = new RetrofitConfig().getServiceAccountAPI().checkLogin(email.getText().toString(),password.getText().toString());
-        call.enqueue(new Callback<Status>() {
+    public void authenticate(String email, String password) {
+        ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
+        serviceAccountAp.checkLogin(email, password, new CallBack<Status>() {
             @Override
-            public void onResponse(Call<Status> call, Response<Status> response) {
-                        view.logInto();
+            public void onLoaded(Status o) {
+                if (o.getStatus()) {
+                    view.logInto();
+                }
             }
 
             @Override
-            public void onFailure(Call<Status> call, Throwable t) {
-                view.fail();
+            public void onFailed(String fail) {
+                view.invalid(fail);
+
+            }
+
+            @Override
+            public void noConnection(String noConnection) {
+                view.noConnection(noConnection);
             }
         });
-
-
-
     }
+
 }

@@ -1,26 +1,29 @@
 package com.example.desafiocontacorrente.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.desafiocontacorrente.R;
-import com.example.desafiocontacorrente.contracts.Contract;
+import com.example.desafiocontacorrente.contracts.LoginContract;
 import com.example.desafiocontacorrente.presenter.LoginPresenter;
-import com.example.desafiocontacorrente.view.AccountActivity;
 import com.google.android.material.snackbar.Snackbar;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements Contract.View {
-    @BindView(R.id.edEmail) private EditText edEmail;
-    @BindView(R.id.edPassword) private EditText edPassword;
-    @BindView(R.id.btnEnter)  Button btnEnter;
+/**
+ * @author Rafael Lima Nunues de Oliveira
+ * @version 1.0
+ * @since 1.5
+ * @see LoginPresenter
+ */
+public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+    private EditText edEmail;
+    private EditText edPassword ;
+    private Button btnEnter ;
     private LoginPresenter presenter;
 
     @Override
@@ -28,19 +31,40 @@ public class LoginActivity extends AppCompatActivity implements Contract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        presenter = new LoginPresenter(this,edEmail,edPassword);
+        initializeViews();
+        setListeners();
+        presenter = new LoginPresenter(this);
     }
-
 
     @Override
     public void logInto() {
-        Intent intent = new Intent(this, AccountActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("email",edEmail.getText().toString());
         startActivity(intent);
     }
 
-    @Override
-    public void fail() {
-        Snackbar.make(btnEnter,R.string.invalid,Snackbar.LENGTH_LONG);
+    public void invalid(String fail){
+
+        Snackbar.make(btnEnter,fail,Snackbar.LENGTH_LONG).show();
     }
+
+    @Override
+    public void noConnection(String noConnection) {
+        Snackbar.make(btnEnter,noConnection, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void initializeViews() {
+        edEmail = findViewById(R.id.edEmail);
+        edPassword = findViewById(R.id.edPassword);
+        btnEnter = findViewById(R.id.btnEnter);
+    }
+
+    @Override
+    public void setListeners() {
+        btnEnter.setOnClickListener(v -> presenter.authenticate("rafael.nunes@evosystems.com.br", "123456"/*edEmail.getText().toString(),edPassword.getText().toString()*/));
+
+    }
+
 
 }
