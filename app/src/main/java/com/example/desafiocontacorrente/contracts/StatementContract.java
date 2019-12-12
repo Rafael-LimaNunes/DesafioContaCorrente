@@ -6,7 +6,7 @@ public class StatementContract{
 
     public interface View{
         void showList(List list);
-        void initialize();
+        void initializeViews();
 
     }
 

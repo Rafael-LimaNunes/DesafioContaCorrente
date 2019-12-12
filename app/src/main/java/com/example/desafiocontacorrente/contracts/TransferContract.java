@@ -11,7 +11,7 @@ public class TransferContract {
     }
 
     public interface Presenter{
-        void transfer(int idUserFrom, double value);
+        void transfer(int idUserTo,int idUserFrom, double value);
 
     }
 }

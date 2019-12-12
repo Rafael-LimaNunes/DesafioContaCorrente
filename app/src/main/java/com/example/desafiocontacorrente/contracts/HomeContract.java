@@ -1,5 +1,7 @@
 package com.example.desafiocontacorrente.contracts;
 
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.desafiocontacorrente.model.User;
@@ -13,7 +15,7 @@ public class HomeContract {
         void initializeViews();
         void setListeners();
         void errorShowInformation(String fail);
-        void changeFragment(Fragment fragment);
+        void changeFragment(Fragment fragment, Bundle bundle);
 
     }
 

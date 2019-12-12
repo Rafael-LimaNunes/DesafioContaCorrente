@@ -9,4 +9,15 @@ public class Statement {
     @SerializedName("id_to") int idTo;
     @SerializedName("value") int value;
     @SerializedName("data") int date;
+
+    @Override
+    public String toString() {
+        return "Statement{" +
+                "id=" + id +
+                ", idFrom=" + idFrom +
+                ", idTo=" + idTo +
+                ", value=" + value +
+                ", date=" + date +
+                '}';
+    }
 }

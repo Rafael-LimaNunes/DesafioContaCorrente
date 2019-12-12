@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,15 +28,20 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private Button btnTransfer;
     private Button btnExit;
     private View view;
+    private String email;
+    private Bundle bundle;
     private TextView tvDrawerName;
     private TextView tvDrawerEmail;
+    private DrawerLayout drawerLayout;
+    private String id;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        bundle = new Bundle();
         presenter = new HomePresenter(this);
-        String email = getActivity().getIntent().getExtras().getString("email");
+        email = getActivity().getIntent().getExtras().getString("email");
         return view;
 
     }
@@ -45,7 +51,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         super.onResume();
         initializeViews();
         setListeners();
-        presenter.getUser("rafael.nunes@evosystems.com.br");
+        presenter.getUser(email);
     }
 
     @Override
@@ -57,9 +63,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     public void showUserInformation(User user) {
         tvName.setText(user.getName());
         tvBalance.setText(user.getBalance());
-        tvDrawerName.setText(user.getName());
-        tvDrawerEmail.setText(user.getEmail());
-        Toast.makeText(view.getContext(), "Bem Vindo!!!" + user.getName() + ": "+ user.getBalance(), Toast.LENGTH_LONG).show();
+        bundle.putString("userId", user.getId());
+        /*tvDrawerName.setText(user.getName());
+        tvDrawerEmail.setText(user.getEmail());*/
     }
 
     @Override
@@ -69,15 +75,15 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         btnStatement = view.findViewById(R.id.btnStatement);
         btnTransfer = view.findViewById(R.id.btnTransfer);
         btnExit = view.findViewById(R.id.btnExit);
-        tvDrawerName = view.findViewById(R.id.tvDrawerName);
-        tvDrawerEmail = view.findViewById(R.id.tvDrawerEmail);
-
+       /* tvDrawerName = view.findViewById(R.id.tvDrawerName);
+        tvDrawerEmail = view.findViewById(R.id.tvDrawerEmail);*/
     }
     @Override
     public void setListeners() {
-        btnStatement.setOnClickListener(v -> changeFragment(new StatementFragment()));
+        btnStatement.setOnClickListener(v ->
+                changeFragment(new StatementFragment(),bundle));
 
-        btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment()));
+        btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment(), bundle));
 
         btnExit.setOnClickListener(v -> getActivity().finish());
     }
@@ -87,11 +93,17 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         Toast.makeText(view.getContext(), "OnFailed", Toast.LENGTH_LONG).show();
     }
 
+
+    /**
+     *
+     * @param fragment
+     */
     @Override
-    public void changeFragment(Fragment fragment) {
+    public void changeFragment(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         Fragment oldFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment);
-        if (fragment != oldFragment) {
+        if (fragment == oldFragment) {
             Snackbar.make(tvBalance, "Já esta nessa tela", Snackbar.LENGTH_LONG).show();
         } else {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

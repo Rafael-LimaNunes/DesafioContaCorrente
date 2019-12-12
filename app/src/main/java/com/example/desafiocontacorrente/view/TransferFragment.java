@@ -21,11 +21,12 @@ public class TransferFragment extends Fragment implements TransferContract.View 
     Button btnValueTransfer;
     TransferPresenter presenter;
     View view;
+    String id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         presenter = new TransferPresenter(this);
-
+         id = getArguments().getString("userId");
          view = inflater.inflate(R.layout.fragment_statement, container, false);
         return view;
     }
@@ -39,7 +40,7 @@ public class TransferFragment extends Fragment implements TransferContract.View 
 
     @Override
     public void setListeners() {
-        btnValueTransfer.setOnClickListener(v -> presenter.transfer(Integer.parseInt(edEmailTrasnfer.getText().toString()),Double.parseDouble(edValueTransfer.getText().toString())));
+        btnValueTransfer.setOnClickListener(v -> presenter.transfer(Integer.parseInt(id),Integer.parseInt(edEmailTrasnfer.getText().toString()),Double.parseDouble(edValueTransfer.getText().toString())));
     }
 
     @Override

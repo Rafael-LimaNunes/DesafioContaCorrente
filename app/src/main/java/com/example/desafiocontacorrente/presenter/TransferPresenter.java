@@ -14,9 +14,9 @@ public class TransferPresenter implements TransferContract.Presenter {
 
 
     @Override
-    public void transfer(int  idUserFrom, double value) {
+    public void transfer(int idUserTo,int  idUserFrom, double value) {
         ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
-        serviceAccountAp.transfer(5, idUserFrom, value, new ServiceAccountAPI.CallBack<Transfer>() {
+        serviceAccountAp.transfer(idUserTo, idUserFrom, value, new ServiceAccountAPI.CallBack<Transfer>() {
             @Override
             public void onLoaded(Transfer o) {
                  if(o.isStatus()){
