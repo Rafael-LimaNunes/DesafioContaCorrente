@@ -16,4 +16,12 @@
     <string name="close_drawer">Fechar</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="menu_home">Minha Conta</string>
+    <string name="dialog_exit">Sair</string>
+    <string name="dialog_yes">Sim</string>
+    <string name="dialog_no">Não</string>
+    <string name="exit_mensage">Deseja realmente sair?</string>
+    <string name="title_home">Minha Conta</string>
+    <string name="error_transfer">Insufficient balance or invalid email.</string>
+    <string name="transfer_title">Tansfer successfully</string>
+    <string name="noConnection_transfer">no connection to transfer.</string>
 </resources>

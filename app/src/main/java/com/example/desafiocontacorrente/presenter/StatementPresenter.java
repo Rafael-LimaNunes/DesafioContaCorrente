@@ -19,7 +19,7 @@ public class StatementPresenter implements StatementContract.Presenter {
         serviceAccountAp.getBankStatement(id, new ServiceAccountAPI.CallBack<List>() {
             @Override
             public void onLoaded(List list) {
-                view.showList(list);
+               view.bindList(list);
             }
 
             @Override

@@ -1,13 +1,16 @@
 package com.example.desafiocontacorrente.contracts;
+
+import android.content.Context;
+
 public class LoginContract {
 
     public interface View{
         void logInto();
         void invalid(String fail);
-        void noConnection(String noConnection);
         void initializeViews();
         void setListeners();
-
+        Context getContext();
+        void noConnection(String noConnection);
     }
 
     public interface Presenter{

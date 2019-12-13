@@ -6,6 +6,9 @@ public class TransferContract {
         void initializeViews();
         void setListeners();
         void transferSuccessfully();
+        void showErrorMessage();
+        void showDialog(String nameFrom, String nameTO,String value);
+        void noConnectiion();
 
 
     }

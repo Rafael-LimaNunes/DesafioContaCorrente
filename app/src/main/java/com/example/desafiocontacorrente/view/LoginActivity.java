@@ -1,9 +1,11 @@
 package com.example.desafiocontacorrente.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +13,6 @@ import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.LoginContract;
 import com.example.desafiocontacorrente.presenter.LoginPresenter;
 import com.google.android.material.snackbar.Snackbar;
-
-import butterknife.ButterKnife;
 
 /**
  * @author Rafael Lima Nunues de Oliveira
@@ -30,28 +30,23 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        presenter = new LoginPresenter(this);
         initializeViews();
         setListeners();
-        presenter = new LoginPresenter(this);
+
     }
 
     @Override
     public void logInto() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("email",edEmail.getText().toString());
         startActivity(intent);
     }
 
     public void invalid(String fail){
-
         Snackbar.make(btnEnter,fail,Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
-    public void noConnection(String noConnection) {
-        Snackbar.make(btnEnter,noConnection, Snackbar.LENGTH_LONG).show();
-    }
 
     @Override
     public void initializeViews() {
@@ -62,8 +57,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void setListeners() {
-        btnEnter.setOnClickListener(v -> presenter.authenticate("rafael.nunes@evosystems.com.br", "123456"/*edEmail.getText().toString(),edPassword.getText().toString()*/));
+        btnEnter.setOnClickListener(v -> presenter.authenticate(edEmail.getText().toString(),edPassword.getText().toString()));
 
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void noConnection(String noConnection) {
+        Toast.makeText(this,"Sem conexao",Toast.LENGTH_LONG).show();
     }
 
 

@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.HomeContract;
@@ -20,7 +21,7 @@ import com.example.desafiocontacorrente.model.User;
 import com.example.desafiocontacorrente.presenter.HomePresenter;
 import com.google.android.material.snackbar.Snackbar;
 
-public class HomeFragment extends Fragment implements HomeContract.View {
+public class HomeFragment extends RootFragment implements HomeContract.View {
     private TextView tvName;
     private TextView tvBalance;
     private HomePresenter presenter;
@@ -30,6 +31,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private View view;
     private String email;
     private Bundle bundle;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private View container;
     private TextView tvDrawerName;
     private TextView tvDrawerEmail;
     private DrawerLayout drawerLayout;
@@ -39,7 +42,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        setProgress(true);
         bundle = new Bundle();
+        setTitle(getString(R.string.title_home));
         presenter = new HomePresenter(this);
         email = getActivity().getIntent().getExtras().getString("email");
         return view;
@@ -61,9 +66,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showUserInformation(User user) {
+        container.setVisibility(View.GONE);
         tvName.setText(user.getName());
         tvBalance.setText(user.getBalance());
         bundle.putString("userId", user.getId());
+        container.setVisibility(View.VISIBLE);
+        setProgress(false);
+
+
         /*tvDrawerName.setText(user.getName());
         tvDrawerEmail.setText(user.getEmail());*/
     }
@@ -75,8 +85,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         btnStatement = view.findViewById(R.id.btnStatement);
         btnTransfer = view.findViewById(R.id.btnTransfer);
         btnExit = view.findViewById(R.id.btnExit);
-       /* tvDrawerName = view.findViewById(R.id.tvDrawerName);
-        tvDrawerEmail = view.findViewById(R.id.tvDrawerEmail);*/
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        container = view.findViewById(R.id.nav_host_fragment);
+
     }
     @Override
     public void setListeners() {
@@ -86,6 +97,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment(), bundle));
 
         btnExit.setOnClickListener(v -> getActivity().finish());
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getUser(email);
+                swipeRefreshLayout.isRefreshing();
+            }
+        });
     }
 
     @Override

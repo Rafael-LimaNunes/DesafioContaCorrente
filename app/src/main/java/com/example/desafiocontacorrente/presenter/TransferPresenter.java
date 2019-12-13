@@ -26,11 +26,12 @@ public class TransferPresenter implements TransferContract.Presenter {
 
             @Override
             public void onFailed(String fail) {
-
+                view.showErrorMessage();
             }
 
             @Override
             public void noConnection(String noConnection) {
+                view.noConnectiion();
 
             }
         });
