@@ -46,7 +46,7 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
         bundle = new Bundle();
         setTitle(getString(R.string.title_home));
         presenter = new HomePresenter(this);
-        email = getActivity().getIntent().getExtras().getString("email");
+        email = getArguments().getString("email");
         return view;
 
     }
@@ -105,6 +105,7 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
                 swipeRefreshLayout.isRefreshing();
             }
         });
+
     }
 
     @Override

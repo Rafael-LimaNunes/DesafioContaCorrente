@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.MainContract;
 import com.example.desafiocontacorrente.extras.RootActivity;
+import com.example.desafiocontacorrente.model.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,6 +39,9 @@ public class MainActivity extends RootActivity implements MainContract.View {
     private FrameLayout contaner;
     private ActionBarDrawerToggle toggle;
     private Bundle bundle;
+    private TextView navHeaderName;
+    private TextView  navHeaderEmail;
+
 
 
     @Override
@@ -44,13 +49,15 @@ public class MainActivity extends RootActivity implements MainContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initializeViews();
+        setListeners();
         setSupportActionBar(toolbar);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         homeFragment = new HomeFragment();
+        String email = getIntent().getExtras().getString("email");
+        bundle.putString("email",email);
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -73,8 +80,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle(title);
     }
-
-
 
     @Override
     public Context getContext() {
@@ -134,7 +139,9 @@ public class MainActivity extends RootActivity implements MainContract.View {
     }
 
     @Override
-    public void initializeNavHeader() {
+    public void initializeNavHeader(User user) {
+        navHeaderName.setText(user.getName());
+        navHeaderEmail.setText(user.getEmail());
     }
 
     @Override
@@ -153,14 +160,14 @@ public class MainActivity extends RootActivity implements MainContract.View {
     }
 
     @Override
-    public void displayErrorMessage() {
-
+    public void lockDL(boolean lock) {
+        if (lock) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 
-    @Override
-    public void lockDL() {
-
-    }
 
     @Override
     public ActionBarDrawerToggle getToggle() {

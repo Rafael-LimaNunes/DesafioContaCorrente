@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 
+import com.example.desafiocontacorrente.model.User;
+
 public class MainContract {
 
     public interface View{
@@ -12,10 +14,9 @@ public class MainContract {
         void initializeViews();
         void setProgress(Boolean visible);
         void setListeners();
-        void initializeNavHeader();
+        void initializeNavHeader(User user);
         void changeFragment(Fragment fragment);
-        void displayErrorMessage();
-        void lockDL();
+        void lockDL(boolean lock);
         ActionBarDrawerToggle getToggle();
 
 

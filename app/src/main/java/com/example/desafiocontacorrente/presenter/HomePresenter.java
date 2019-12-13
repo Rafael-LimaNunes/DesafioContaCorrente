@@ -27,6 +27,7 @@ public class HomePresenter implements HomeContract.Presenter {
                 view.errorShowInformation(fail);
             }
 
+
             @Override
             public void noConnection(String noConnection) {
                 view.noConnection(noConnection);
