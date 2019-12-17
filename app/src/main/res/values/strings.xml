@@ -28,4 +28,5 @@
     <string name="empty_fields">Os campos não podem ficar vazios</string>
     <string name="error_update">Erro ao atualizar os dados</string>
     <string name="error_onTransfer">Erro ao transferir</string>
+    <string name="error_statement">Erro ao carregar o extrato.</string>
 </resources>

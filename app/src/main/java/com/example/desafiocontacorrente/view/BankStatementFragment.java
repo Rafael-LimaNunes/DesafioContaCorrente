@@ -1,23 +1,20 @@
 package com.example.desafiocontacorrente.view;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.StatementContract;
 import com.example.desafiocontacorrente.extras.RootFragment;
 import com.example.desafiocontacorrente.model.Statement;
 import com.example.desafiocontacorrente.presenter.StatementPresenter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -46,12 +43,11 @@ public class BankStatementFragment extends RootFragment implements StatementCont
         presenter.getBankStatement();
         /*setBackButton(true);*/
     }
-
     @Override
     public void showList(List list) {
+        Toast.makeText(view.getContext(),"extrato: "+ list.toString(), Toast.LENGTH_LONG).show();
         adapter = new ArrayAdapter<Statement>(view.getContext(), android.R.layout.simple_list_item_1,list);
         lvStatement.setAdapter(adapter);
-
     }
 
     @Override
@@ -60,9 +56,13 @@ public class BankStatementFragment extends RootFragment implements StatementCont
     }
 
 
-
     @Override
     public void bindEmpty() {
+    }
+
+    @Override
+    public void showErrorMessage(String error) {
+        Snackbar.make(lvStatement,error,Snackbar.LENGTH_LONG).show();
 
     }
 }

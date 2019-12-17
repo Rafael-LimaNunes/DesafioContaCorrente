@@ -25,7 +25,7 @@ public interface RetrofitEndPoint {
 
     @FormUrlEncoded
     @POST("./get-bank-statement")
-    Call<List<Statement>> getBankStatement(@Field("id") int id);
+    Call<List<Statement>> getBankStatement(@Field("id_user") int id);
 
     @FormUrlEncoded
     @POST("./transfer")

@@ -7,13 +7,9 @@ import android.widget.Toast;
 import com.example.desafiocontacorrente.api.ServiceAccountAPI;
 import com.example.desafiocontacorrente.api.ServiceAccountApImpl;
 import com.example.desafiocontacorrente.contracts.StatementContract;
-import com.example.desafiocontacorrente.extras.MySharedPreferences;
 import com.example.desafiocontacorrente.model.Statement;
-import com.example.desafiocontacorrente.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.ToDoubleBiFunction;
 
 public class StatementPresenter implements StatementContract.Presenter {
     StatementContract.View view;
@@ -26,6 +22,7 @@ public class StatementPresenter implements StatementContract.Presenter {
     @Override
     public void getBankStatement() {
         ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
+        Toast.makeText(view.getContext(),"Buscando...",Toast.LENGTH_LONG).show();
         SharedPreferences preferences = view.getContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         idUser = preferences.getString("id","não encontrado");
         serviceAccountAp.getBankStatement(5, new ServiceAccountAPI.CallBack<List<Statement>>() {
@@ -33,17 +30,17 @@ public class StatementPresenter implements StatementContract.Presenter {
 
             @Override
             public void onLoaded(List statements) {
-                ArrayList<Statement> list = (ArrayList<Statement>) statements;
-                Toast.makeText(view.getContext(),"extrato: "+ list.toString(),Toast.LENGTH_LONG).show();
+                view.showList(statements);
             }
 
             @Override
             public void onFailed(String fail) {
-
+               view.showErrorMessage(fail);
             }
 
             @Override
             public void noConnection(String noConnection) {
+                view.showErrorMessage(noConnection);
 
             }
         });

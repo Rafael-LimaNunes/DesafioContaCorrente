@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Statement {
 
-    @SerializedName("id") int id;
-    @SerializedName("id_from") int idFrom;
-    @SerializedName("id_to") int idTo;
-    @SerializedName("value") int value;
-    @SerializedName("data") int date;
+    @SerializedName("id") String id;
+    @SerializedName("id_from") String idFrom;
+    @SerializedName("id_to") String idTo;
+    @SerializedName("value") String value;
+    @SerializedName("data") String date;
 
     @Override
     public String toString() {

@@ -62,16 +62,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
                 || super.onSupportNavigateUp();
     }
 
-    /*
-     *Se o NavigationDrawer tiver aberto e o botão de voltar for pressionado
-     * fechar o NavigationDrawer primero. Se o botão de voltar for pressionado novamente
-     * então fecha a activity
-     */
-
-    /*
-     * Muda o título da actionBar
-     * Quando muda o de fragment
-     * */
     void setTitle(String title) {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setTitle(title);
@@ -146,8 +136,10 @@ public class MainActivity extends RootActivity implements MainContract.View {
         if (fragment == oldFragment) {
             Snackbar.make(toolbar, "Já esta nessa tela", Snackbar.LENGTH_LONG).show();
         } else {
+            View conteudo = findViewById(R.id.nav_host_fragment);
+
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+            fragmentTransaction.replace(conteudo.getId(), fragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();

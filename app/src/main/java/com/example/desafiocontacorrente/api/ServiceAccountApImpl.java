@@ -74,12 +74,14 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
                 if(response.code()==200){
                     List statements = response.body();
                     callBack.onLoaded(statements);
+                }else {
+                    callBack.onFailed(String.valueOf(R.string.error_statement));
                 }
             }
 
             @Override
             public void onFailure(Call<List<Statement>> call, Throwable t) {
-                callBack.onFailed("Se conexão para Extrato");
+                callBack.noConnection(String.valueOf(R.string.noConnection));
             }
         });
     }
