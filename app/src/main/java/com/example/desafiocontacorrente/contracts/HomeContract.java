@@ -15,8 +15,6 @@ public class HomeContract {
         void initializeViews();
         void setListeners();
         void errorShowInformation(String fail);
-        void changeFragment(Fragment fragment, Bundle bundle);
-
     }
 
     public interface Presenter{
