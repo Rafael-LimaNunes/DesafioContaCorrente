@@ -61,8 +61,11 @@ public class TransferFragment extends RootFragment implements TransferContract.V
     public void showDialog(String nameFrom, String nameTO,String value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getActivity().getString(R.string.transfer_title));
-        builder.setMessage("Valor enviado: "+ value + "\nDe: $nameFrom\nPara: $nameTo");
+        builder.setMessage("Valor enviado: "+ value + "\nDe: " + nameFrom + "\nPara: " + nameTO);
         builder.setNeutralButton("Voltar", (dialog, which) -> changeFragment(new HomeFragment()));
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

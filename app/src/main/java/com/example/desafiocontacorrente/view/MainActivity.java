@@ -34,7 +34,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private HomeFragment homeFragment;
     private ProgressBar progressBar;
     private FrameLayout contaner;
     private ActionBarDrawerToggle toggle;
@@ -51,7 +50,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        homeFragment = new HomeFragment();
 
     }
 
@@ -136,10 +134,8 @@ public class MainActivity extends RootActivity implements MainContract.View {
         if (fragment == oldFragment) {
             Snackbar.make(toolbar, "Já esta nessa tela", Snackbar.LENGTH_LONG).show();
         } else {
-            View conteudo = findViewById(R.id.nav_host_fragment);
-
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(conteudo.getId(), fragment);
+            fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();

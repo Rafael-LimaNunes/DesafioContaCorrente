@@ -45,7 +45,6 @@ public class BankStatementFragment extends RootFragment implements StatementCont
     }
     @Override
     public void showList(List list) {
-        Toast.makeText(view.getContext(),"extrato: "+ list.toString(), Toast.LENGTH_LONG).show();
         adapter = new ArrayAdapter<Statement>(view.getContext(), android.R.layout.simple_list_item_1,list);
         lvStatement.setAdapter(adapter);
     }
@@ -54,7 +53,6 @@ public class BankStatementFragment extends RootFragment implements StatementCont
     public void initializeViews() {
         lvStatement = view.findViewById(R.id.lvStatement);
     }
-
 
     @Override
     public void bindEmpty() {

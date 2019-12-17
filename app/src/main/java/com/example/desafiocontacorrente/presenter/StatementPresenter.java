@@ -22,12 +22,9 @@ public class StatementPresenter implements StatementContract.Presenter {
     @Override
     public void getBankStatement() {
         ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
-        Toast.makeText(view.getContext(),"Buscando...",Toast.LENGTH_LONG).show();
         SharedPreferences preferences = view.getContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         idUser = preferences.getString("id","não encontrado");
-        serviceAccountAp.getBankStatement(5, new ServiceAccountAPI.CallBack<List<Statement>>() {
-
-
+        serviceAccountAp.getBankStatement("2", new ServiceAccountAPI.CallBack<List<Statement>>() {
             @Override
             public void onLoaded(List statements) {
                 view.showList(statements);

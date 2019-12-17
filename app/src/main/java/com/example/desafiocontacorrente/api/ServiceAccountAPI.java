@@ -10,7 +10,7 @@ public interface ServiceAccountAPI {
     }
     void checkLogin(String login, String password, CallBack callBack);
     void getUserData(String email, CallBack callBack);
-    void getBankStatement(int id, CallBack callBack);
+    void getBankStatement(String id, CallBack callback);
     void transfer(int idUserFrom, int idUserTo, double valueTransfer, CallBack callBack);
 
 }

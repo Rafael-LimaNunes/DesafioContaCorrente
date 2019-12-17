@@ -1,11 +1,14 @@
 package com.example.desafiocontacorrente.api;
 
+import android.content.Context;
+
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.model.Statement;
 import com.example.desafiocontacorrente.model.Status;
 import com.example.desafiocontacorrente.model.Transfer;
 import com.example.desafiocontacorrente.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,7 +48,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
 
     @Override
     public void getUserData(String email, CallBack callBack) {
-        Call<User> call = retrofitEndPoint.getUser("rafael.nunes@evosystems.com.br");
+        Call<User> call = retrofitEndPoint.getUser(email);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -66,22 +69,21 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
     }
 
     @Override
-    public void getBankStatement(int id, CallBack callBack) {
+    public void getBankStatement(String id, CallBack callback) {
         Call<List<Statement>> call = retrofitEndPoint.getBankStatement(id);
         call.enqueue(new Callback<List<Statement>>() {
             @Override
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
-                if(response.code()==200){
-                    List statements = response.body();
-                    callBack.onLoaded(statements);
-                }else {
-                    callBack.onFailed(String.valueOf(R.string.error_statement));
+                if (response.code()==200){
+                    List result = new ArrayList();
+                    result.add(response.body());
+                    callback.onLoaded(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Statement>> call, Throwable t) {
-                callBack.noConnection(String.valueOf(R.string.noConnection));
+                callback.onFailed("Bacon");
             }
         });
     }

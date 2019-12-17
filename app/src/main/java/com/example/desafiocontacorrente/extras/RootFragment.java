@@ -51,7 +51,9 @@ public class RootFragment extends Fragment {
     }
 
     protected void changeFragment(Fragment fragment){
+        if(getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).changeFragment(fragment);
+        }
     }
 
     @Override

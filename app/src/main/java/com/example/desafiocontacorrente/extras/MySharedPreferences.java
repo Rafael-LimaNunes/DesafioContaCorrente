@@ -13,7 +13,7 @@ public class MySharedPreferences {
         editor.apply();
     }
 
-    public static String getPreference(Context context,String key){
+    public static String getPreferences(Context context,String key){
         android.content.SharedPreferences preferences = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         return preferences.getString(key,"não encontrado");
 

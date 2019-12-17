@@ -20,9 +20,7 @@ public class TransferPresenter implements TransferContract.Presenter {
 
     public TransferPresenter(TransferContract.View view) {
         this.view = view;
-        SharedPreferences preferences = view.getContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
-        emailFrom = preferences.getString("email","não encontrado");
-       /* emailFrom = MySharedPreferences.getPreference(view.getContext(),"email");*/
+        emailFrom = MySharedPreferences.getPreferences(view.getContext(),"email");
     }
 
 

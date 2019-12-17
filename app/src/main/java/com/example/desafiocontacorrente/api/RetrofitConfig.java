@@ -1,7 +1,7 @@
 package com.example.desafiocontacorrente.api;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitConfig {
     private static Retrofit retrofit;
@@ -15,7 +15,7 @@ public class RetrofitConfig {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(JacksonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;

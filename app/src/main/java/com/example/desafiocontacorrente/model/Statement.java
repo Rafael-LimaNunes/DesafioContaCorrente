@@ -1,9 +1,11 @@
 package com.example.desafiocontacorrente.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.SerializedName;
 
 public class Statement {
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @SerializedName("id") String id;
     @SerializedName("id_from") String idFrom;
     @SerializedName("id_to") String idTo;
