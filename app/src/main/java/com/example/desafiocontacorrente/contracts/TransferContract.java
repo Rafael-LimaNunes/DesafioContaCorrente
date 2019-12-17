@@ -1,20 +1,20 @@
 package com.example.desafiocontacorrente.contracts;
 
+import android.content.Context;
+
 public class TransferContract {
 
     public interface View {
+        Context getContext();
         void initializeViews();
         void setListeners();
         void transferSuccessfully();
-        void showErrorMessage();
         void showDialog(String nameFrom, String nameTO,String value);
-        void noConnectiion();
-
-
+        void displayErrorMessage(String invalid);
     }
 
     public interface Presenter{
-        void transfer(int idUserTo,int idUserFrom, double value);
-
+        void transfer(double value);
+        void confirmData(String emailTo, String value);
     }
 }

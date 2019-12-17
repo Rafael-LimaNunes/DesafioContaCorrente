@@ -2,6 +2,7 @@ package com.example.desafiocontacorrente.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.LoginContract;
+import com.example.desafiocontacorrente.extras.MySharedPreferences;
 import com.example.desafiocontacorrente.presenter.LoginPresenter;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -39,14 +41,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void logInto() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("email",edEmail.getText().toString());
+        MySharedPreferences.setPreferences(getContext(),"email",edEmail.getText().toString());
         startActivity(intent);
     }
 
     public void invalid(String fail){
         Snackbar.make(btnEnter,fail,Snackbar.LENGTH_LONG).show();
     }
-
 
     @Override
     public void initializeViews() {

@@ -24,4 +24,8 @@
     <string name="error_transfer">Insufficient balance or invalid email.</string>
     <string name="transfer_title">Tansfer successfully</string>
     <string name="noConnection_transfer">no connection to transfer.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_fields">Os campos não podem ficar vazios</string>
+    <string name="error_update">Erro ao atualizar os dados</string>
+    <string name="error_onTransfer">Erro ao transferir</string>
 </resources>

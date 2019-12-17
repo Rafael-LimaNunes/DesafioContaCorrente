@@ -1,5 +1,6 @@
-package com.example.desafiocontacorrente.view;
+package com.example.desafiocontacorrente.extras;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,6 +11,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 
 import com.example.desafiocontacorrente.R;
+import com.example.desafiocontacorrente.view.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 public class RootFragment extends Fragment {
 
@@ -40,18 +43,25 @@ public class RootFragment extends Fragment {
         }
     }
     protected void setProgress(Boolean visible) {
-        if(getActivity() instanceof MainActivity){
+       /* if(getActivity() instanceof MainActivity){
             ((MainActivity)getActivity()).setProgress(visible);
 
-        }
+        }*/
 
     }
 
-    protected void changeFragment(RootFragment fragment){
-        if(getActivity() instanceof MainActivity){
+    protected void changeFragment(Fragment fragment){
             ((MainActivity) getActivity()).changeFragment(fragment);
-        }
+    }
 
+    @Override
+    public Context getContext() {
+        return getActivity().getApplicationContext();
+    }
+
+
+    public void noConnection(View view){
+        Snackbar.make(view,R.string.noConnection,Snackbar.LENGTH_LONG).show();
     }
 }
 

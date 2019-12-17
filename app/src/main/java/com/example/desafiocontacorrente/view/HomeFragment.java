@@ -1,5 +1,7 @@
 package com.example.desafiocontacorrente.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.HomeContract;
+import com.example.desafiocontacorrente.extras.MySharedPreferences;
+import com.example.desafiocontacorrente.extras.RootFragment;
 import com.example.desafiocontacorrente.model.User;
 import com.example.desafiocontacorrente.presenter.HomePresenter;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,23 +34,24 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
     private Button btnExit;
     private View view;
     private String email;
-    private Bundle bundle;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View container;
     private TextView tvDrawerName;
     private TextView tvDrawerEmail;
     private DrawerLayout drawerLayout;
     private String id;
+    private SharedPreferences preferences;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         setProgress(true);
-        bundle = new Bundle();
+        preferences = getActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        email = preferences.getString("email","não encontrado");
         setTitle(getString(R.string.title_home));
+        initializeViews();
         presenter = new HomePresenter(this);
-        email = getArguments().getString("email");
         return view;
 
     }
@@ -54,7 +59,6 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        initializeViews();
         setListeners();
         presenter.getUser(email);
     }
@@ -66,11 +70,11 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
 
     @Override
     public void showUserInformation(User user) {
-        container.setVisibility(View.GONE);
+       /* container.setVisibility(View.GONE);*/
         tvName.setText(user.getName());
-        tvBalance.setText(user.getBalance());
-        bundle.putString("userId", user.getId());
-        container.setVisibility(View.VISIBLE);
+        tvBalance.setText("R$: " + user.getBalance());
+        MySharedPreferences.setPreferences(getContext(),"id",user.getId());
+       /* container.setVisibility(View.VISIBLE);*/
         setProgress(false);
 
 
@@ -85,53 +89,30 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
         btnStatement = view.findViewById(R.id.btnStatement);
         btnTransfer = view.findViewById(R.id.btnTransfer);
         btnExit = view.findViewById(R.id.btnExit);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         container = view.findViewById(R.id.nav_host_fragment);
 
     }
     @Override
     public void setListeners() {
-        btnStatement.setOnClickListener(v ->
-                changeFragment(new StatementFragment(),bundle));
+        btnStatement.setOnClickListener(v -> changeFragment(new BankStatementFragment()));
 
-        btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment(), bundle));
+        btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment()));
 
         btnExit.setOnClickListener(v -> getActivity().finish());
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        /*swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 presenter.getUser(email);
                 swipeRefreshLayout.isRefreshing();
             }
-        });
+        });*/
 
     }
 
     @Override
     public void errorShowInformation(String fail) {
         Toast.makeText(view.getContext(), "OnFailed", Toast.LENGTH_LONG).show();
-    }
-
-
-    /**
-     *
-     * @param fragment
-     */
-    @Override
-    public void changeFragment(Fragment fragment, Bundle bundle) {
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment oldFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment);
-        if (fragment == oldFragment) {
-            Snackbar.make(tvBalance, "Já esta nessa tela", Snackbar.LENGTH_LONG).show();
-        } else {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
     }
 
 }

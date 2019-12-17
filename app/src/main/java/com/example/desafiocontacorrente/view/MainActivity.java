@@ -38,11 +38,8 @@ public class MainActivity extends RootActivity implements MainContract.View {
     private ProgressBar progressBar;
     private FrameLayout contaner;
     private ActionBarDrawerToggle toggle;
-    private Bundle bundle;
     private TextView navHeaderName;
     private TextView  navHeaderEmail;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +52,7 @@ public class MainActivity extends RootActivity implements MainContract.View {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         homeFragment = new HomeFragment();
-        String email = getIntent().getExtras().getString("email");
-        bundle.putString("email",email);
+
     }
 
     @Override
@@ -98,16 +94,15 @@ public class MainActivity extends RootActivity implements MainContract.View {
                 .setDrawerLayout(drawerLayout)
                 .build();
     }
-
     @Override
     public void setProgress(Boolean visible) {
-        if(visible){
+       /* if(visible){
             progressBar.setVisibility(View.VISIBLE);
             contaner.setVisibility(View.GONE);
         }else{
             progressBar.setVisibility(View.GONE);
             contaner.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     @Override
@@ -119,11 +114,11 @@ public class MainActivity extends RootActivity implements MainContract.View {
     navigationView.setNavigationItemSelectedListener(item -> {
         switch (item.getItemId()) {
             case R.id.nav_statement: {
-                homeFragment.changeFragment(new StatementFragment(),bundle);
+                changeFragment(new BankStatementFragment());
                 break;
             }
             case R.id.nav_transfer: {
-                homeFragment.changeFragment(new TransferFragment(),bundle);
+                changeFragment(new TransferFragment());
                 break;
             }
             case R.id.nav_exit: {

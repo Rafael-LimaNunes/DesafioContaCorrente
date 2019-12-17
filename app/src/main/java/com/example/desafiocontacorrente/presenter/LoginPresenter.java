@@ -1,5 +1,7 @@
 package com.example.desafiocontacorrente.presenter;
 
+import android.content.SharedPreferences;
+
 import com.example.desafiocontacorrente.api.ServiceAccountAPI.CallBack;
 import com.example.desafiocontacorrente.api.ServiceAccountApImpl;
 import com.example.desafiocontacorrente.contracts.LoginContract;
