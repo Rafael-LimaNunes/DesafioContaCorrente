@@ -3,7 +3,6 @@ package com.example.desafiocontacorrente.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,6 +45,7 @@ public class MainActivity extends RootActivity implements MainContract.View {
         setContentView(R.layout.activity_home);
         initializeViews();
         setListeners();
+
         setSupportActionBar(toolbar);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -76,6 +76,7 @@ public class MainActivity extends RootActivity implements MainContract.View {
         navigationView = findViewById(R.id.nav_view);
         progressBar = findViewById(R.id.progressBar);
         contaner = findViewById(R.id.nav_host_fragment);
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
 
                 R.id.nav_home, R.id.nav_statement, R.id.nav_transfer)
@@ -119,12 +120,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
 
     });
 
-    }
-
-    @Override
-    public void initializeNavHeader(User user) {
-        navHeaderName.setText(user.getName());
-        navHeaderEmail.setText(user.getEmail());
     }
 
     @Override

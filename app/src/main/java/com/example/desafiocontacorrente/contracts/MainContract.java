@@ -14,7 +14,6 @@ public class MainContract {
         void initializeViews();
         void setProgress(Boolean visible);
         void setListeners();
-        void initializeNavHeader(User user);
         void changeFragment(Fragment fragment);
         void lockDL(boolean lock);
         ActionBarDrawerToggle getToggle();

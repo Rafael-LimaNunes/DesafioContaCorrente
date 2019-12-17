@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.HomeContract;
 import com.example.desafiocontacorrente.extras.MySharedPreferences;
@@ -24,6 +26,7 @@ import com.example.desafiocontacorrente.extras.RootFragment;
 import com.example.desafiocontacorrente.model.User;
 import com.example.desafiocontacorrente.presenter.HomePresenter;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends RootFragment implements HomeContract.View {
     private TextView tvName;
@@ -38,6 +41,8 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
     private View container;
     private TextView tvDrawerName;
     private TextView tvDrawerEmail;
+    private ImageView ivDrawerProfile;
+
     private DrawerLayout drawerLayout;
     private String id;
     private SharedPreferences preferences;
@@ -73,13 +78,21 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
        /* container.setVisibility(View.GONE);*/
         tvName.setText(user.getName());
         tvBalance.setText("R$: " + user.getBalance());
+
+        tvDrawerName = getActivity().findViewById(R.id.tvDrawerName);
+        tvDrawerName.setText(user.getName());
+
+        tvDrawerEmail = getActivity().findViewById(R.id.tvDrawerEmail);
+        tvDrawerEmail.setText(user.getEmail());
+
+        ivDrawerProfile = getActivity().findViewById(R.id.ivDrawerProfile);
+        Glide.with(getActivity())
+                .load(user.getProfile())
+                .into(ivDrawerProfile);
+
         MySharedPreferences.setPreferences(getContext(),"id",user.getId());
        /* container.setVisibility(View.VISIBLE);*/
         setProgress(false);
-
-
-        /*tvDrawerName.setText(user.getName());
-        tvDrawerEmail.setText(user.getEmail());*/
     }
 
     @Override

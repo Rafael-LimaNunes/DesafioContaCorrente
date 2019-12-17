@@ -48,5 +48,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
     implementation 'com.jakewharton:butterknife:10.2.0'
     implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.dyhdyh.support:glide:1.0.0'
 
 }
