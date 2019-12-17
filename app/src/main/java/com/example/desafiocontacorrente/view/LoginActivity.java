@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     public void logInto() {
         Intent intent = new Intent(this, MainActivity.class);
         MySharedPreferences.setPreferences(getContext(),"email",edEmail.getText().toString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

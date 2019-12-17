@@ -11,13 +11,12 @@ public class RootActivity extends AppCompatActivity {
 
 
     public void onBackPressed() {
-        super.onBackPressed();
+
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+        super.onBackPressed();
     }
 
     protected void showAlert(android.content.Context context){
