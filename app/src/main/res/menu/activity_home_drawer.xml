@@ -7,13 +7,16 @@
         <item
             android:id="@+id/nav_statement"
             android:icon="@drawable/ic_statement"
+            android:checkable="false"
             android:title="@string/menu_statement" />
         <item
             android:id="@+id/nav_transfer"
             android:icon="@drawable/ic_transfer_2"
+            android:checkable="false"
             android:title="@string/menu_transfer" />
         <item
             android:id="@+id/nav_exit"
+            android:checkable="false"
             android:title="@string/menu_Exit" />
 
     </group>

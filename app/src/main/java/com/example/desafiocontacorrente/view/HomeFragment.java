@@ -12,10 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -25,8 +22,6 @@ import com.example.desafiocontacorrente.extras.MySharedPreferences;
 import com.example.desafiocontacorrente.extras.RootFragment;
 import com.example.desafiocontacorrente.model.User;
 import com.example.desafiocontacorrente.presenter.HomePresenter;
-import com.google.android.material.snackbar.Snackbar;
-import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends RootFragment implements HomeContract.View {
     private TextView tvName;
@@ -37,25 +32,26 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
     private Button btnExit;
     private View view;
     private String email;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private View container;
     private TextView tvDrawerName;
     private TextView tvDrawerEmail;
     private ImageView ivDrawerProfile;
-
-    private DrawerLayout drawerLayout;
-    private String id;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private SharedPreferences preferences;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        setProgress(true);
         preferences = getActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         email = preferences.getString("email","não encontrado");
         setTitle(getString(R.string.title_home));
         initializeViews();
+        ((MainActivity)getActivity()).lockDL(false);
+
+        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v ->{
+            ((MainActivity) getActivity()).getDrawerLayout().openDrawer(GravityCompat.START);
+        });
         presenter = new HomePresenter(this);
         return view;
 
@@ -65,6 +61,7 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
     public void onResume() {
         super.onResume();
         setListeners();
+        setBackButton(false);
         presenter.getUser(email);
     }
 
@@ -75,7 +72,6 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
 
     @Override
     public void showUserInformation(User user) {
-       /* container.setVisibility(View.GONE);*/
         tvName.setText(user.getName());
         tvBalance.setText("R$: " + user.getBalance());
 
@@ -89,10 +85,8 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
         Glide.with(getActivity())
                 .load(user.getProfile())
                 .into(ivDrawerProfile);
-
         MySharedPreferences.setPreferences(getContext(),"id",user.getId());
-       /* container.setVisibility(View.VISIBLE);*/
-        setProgress(false);
+
     }
 
     @Override
@@ -103,6 +97,8 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
         btnTransfer = view.findViewById(R.id.btnTransfer);
         btnExit = view.findViewById(R.id.btnExit);
         container = view.findViewById(R.id.nav_host_fragment);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshHome);
+
 
     }
     @Override
@@ -111,16 +107,12 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
 
         btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment()));
 
-        btnExit.setOnClickListener(v -> getActivity().finish());
+        btnExit.setOnClickListener(v -> ((MainActivity)getActivity()).showExitAlert(getActivity()) );
 
-        /*swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.getUser(email);
-                swipeRefreshLayout.isRefreshing();
-            }
-        });*/
-
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            presenter.getUser(email);
+            swipeRefreshLayout.isRefreshing();
+        });
     }
 
     @Override

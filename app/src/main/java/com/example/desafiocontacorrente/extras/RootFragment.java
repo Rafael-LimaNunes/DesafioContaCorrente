@@ -24,7 +24,7 @@ public class RootFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         actionBarDrawerToggle = ((MainActivity)getActivity()).getToggle();
-        actionBarDrawerToggle.isDrawerIndicatorEnabled();
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
     }
@@ -32,22 +32,17 @@ public class RootFragment extends Fragment {
     protected void setBackButton(Boolean show){
         if(show){
             actionBarDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }else{
+            actionBarDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_toc_black_24dp);
         }
 
     }
 
      protected void setTitle(String title){
         if(getActivity() instanceof MainActivity){
-            ((MainActivity)getActivity()).setTitle(title);
+            ((MainActivity) getActivity()).setTitleToolbar(title);
 
         }
-    }
-    protected void setProgress(Boolean visible) {
-       /* if(getActivity() instanceof MainActivity){
-            ((MainActivity)getActivity()).setProgress(visible);
-
-        }*/
-
     }
 
     protected void changeFragment(Fragment fragment){

@@ -4,15 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.contracts.StatementContract;
+import com.example.desafiocontacorrente.extras.CustomAdapter;
 import com.example.desafiocontacorrente.extras.RootFragment;
-import com.example.desafiocontacorrente.model.Statement;
 import com.example.desafiocontacorrente.presenter.StatementPresenter;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,37 +20,55 @@ import java.util.List;
 
 public class BankStatementFragment extends RootFragment implements StatementContract.View {
 
-    private TextView empty;
     private ListView lvStatement;
     private View view;
-    private ArrayAdapter<Statement> adapter;
+    private CustomAdapter adapter;
     private StatementPresenter presenter;
+    private SwipeRefreshLayout swipeRefreshLayoutStatement;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bank_statement, container, false);
         initializeViews();
+        setListeners();
         setTitle(getString(R.string.menu_statement));
-        presenter = new StatementPresenter(this);
+        ((MainActivity)getActivity()).lockDL(true);
 
+        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v ->{
+            getActivity().onBackPressed();
+        });
+
+        presenter = new StatementPresenter(this);
         return view;
+    }
+
+    private void setListeners() {
+
+        swipeRefreshLayoutStatement.setOnRefreshListener(() -> {
+            presenter.getBankStatement();
+            swipeRefreshLayoutStatement.setRefreshing(false);
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         presenter.getBankStatement();
-        /*setBackButton(true);*/
+        setBackButton(true);
+        ((MainActivity)getActivity()).lockDL(true);
     }
     @Override
     public void showList(List list) {
-        adapter = new ArrayAdapter<Statement>(view.getContext(), android.R.layout.simple_list_item_1,list);
+        adapter = new CustomAdapter(list,getActivity());
         lvStatement.setAdapter(adapter);
     }
 
     @Override
     public void initializeViews() {
         lvStatement = view.findViewById(R.id.lvStatement);
+        swipeRefreshLayoutStatement = view.findViewById(R.id.swipeRefreshStatement);
+
+        ((MainActivity)getActivity()).lockDL(true);
     }
 
     @Override
@@ -61,6 +78,7 @@ public class BankStatementFragment extends RootFragment implements StatementCont
     @Override
     public void showErrorMessage(String error) {
         Snackbar.make(lvStatement,error,Snackbar.LENGTH_LONG).show();
+
 
     }
 }

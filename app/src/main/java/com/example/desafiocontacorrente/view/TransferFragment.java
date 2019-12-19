@@ -24,12 +24,17 @@ public class TransferFragment extends RootFragment implements TransferContract.V
     Button btnValueTransfer;
     TransferPresenter presenter;
     View view;
-    String id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         presenter = new TransferPresenter(this);
          view = inflater.inflate(R.layout.fragment_transfer, container, false);
+        ((MainActivity)getActivity()).lockDL(true);
+
+        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v ->{
+            getActivity().onBackPressed();
+        });
+
          initializeViews();
         return view;
     }
@@ -39,6 +44,7 @@ public class TransferFragment extends RootFragment implements TransferContract.V
         super.onResume();
         setListeners();
         setBackButton(true);
+        ((MainActivity)getActivity()).lockDL(true);
     }
 
     @Override
@@ -61,9 +67,8 @@ public class TransferFragment extends RootFragment implements TransferContract.V
     public void showDialog(String nameFrom, String nameTO,String value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getActivity().getString(R.string.transfer_title));
-        builder.setMessage("Valor enviado: "+ value + "\nDe: " + nameFrom + "\nPara: " + nameTO);
+        builder.setMessage("Valor enviado: R$ "+ value + "\nDe: " + nameFrom + "\nPara: " + nameTO);
         builder.setNeutralButton("Voltar", (dialog, which) -> changeFragment(new HomeFragment()));
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -79,4 +84,6 @@ public class TransferFragment extends RootFragment implements TransferContract.V
     public Context getContext() {
         return super.getContext();
     }
+
+
 }
