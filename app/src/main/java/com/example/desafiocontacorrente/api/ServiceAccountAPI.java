@@ -1,14 +1,16 @@
 package com.example.desafiocontacorrente.api;
 
-import com.example.desafiocontacorrente.model.Status;
-
-import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.POST;
 
 public interface ServiceAccountAPI {
 
-    @POST("./check-login")
-    Call<Status> checkLogin(@Field("email")String email, @Field("password")String password);
+    interface CallBack<T>{
+        void onLoaded(T o);
+        void onFailed(String fail);
+        void noConnection(String noConnection);
+    }
+    void checkLogin(String login, String password, CallBack callBack);
+    void getUserData(String email, CallBack callBack);
+    void getBankStatement(String id, CallBack callback);
+    void transfer(int idUserFrom, int idUserTo, double valueTransfer, CallBack callBack);
 
 }

@@ -1,19 +1,20 @@
 package com.example.desafiocontacorrente.api;
 
-import com.example.desafiocontacorrente.api.ServiceAccountAPI;
-
 import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitConfig {
-    private final Retrofit retrofit;
+class RetrofitConfig {
+    private static Retrofit retrofit;
+    private static final String BASE_URL = "https://www.yourgps.com.br/api/";
 
-    public RetrofitConfig() {
-        this.retrofit = new Retrofit.Builder().baseUrl("https://www.yourgps.com.br/api/").addConverterFactory(JacksonConverterFactory.create()).build();
 
-    }
-
-    public ServiceAccountAPI getServiceAccountAPI() {
-        return this.retrofit.create(ServiceAccountAPI.class);
+    static Retrofit getClient() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit;
     }
 }
