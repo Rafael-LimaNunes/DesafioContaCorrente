@@ -1,10 +1,14 @@
 package com.example.desafiocontacorrente.extras;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.model.Statement;
@@ -14,86 +18,75 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapter extends RecyclerView.Adapter {
 
     private final Activity activity;
     private List<Statement> statements;
-    public View view;
-    private ViewHolder holder;
-    private String idUserFrom;
-    private String tipo;
-
 
     public CustomAdapter(List<Statement> statements, Activity activity) {
         this.statements = statements;
         this.activity = activity;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        
+        View view = LayoutInflater.from(activity).inflate(R.layout.custom_list_statement, parent, false);
+        return new MyViewHolder(view);
+    }
+
+
+    @SuppressLint("SimpleDateFormat")
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        Statement statement = statements.get(position);
+
+        //Convert string date
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormatInput = new SimpleDateFormat("yyyy-MM-dd");
+        Date inputDate = null;//Este método lança ParseException, colocar dentro de try/catch
+        try {
+            inputDate = simpleDateFormatInput.parse(statement.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String userNow = statement.getIdFrom();
+        String idUserFrom = MySharedPreferences.getPreferences(activity, "id");
+        @SuppressLint("SimpleDateFormat") String formattedDate = null;
+        if (inputDate != null) {
+            formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(inputDate);
+        }
+        String type;
+        if(userNow.equals(idUserFrom)){
+            type = "Transfer Sent";
+        }else{
+            type = "Transfer received";
+        }
+        myViewHolder.date.setText(formattedDate);
+        myViewHolder.value.setText(statement.getValue());
+        myViewHolder.type.setText(type);
+
 
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return statements.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return statements.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-
-        if( convertView == null) {
-            view = activity.getLayoutInflater().inflate(R.layout.custom_list_statement, parent, false);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
-        }else { view = convertView; }
-            holder = new ViewHolder(view);
-            Statement statement = statements.get(position);
-            SimpleDateFormat simpleDateFormatInput = new SimpleDateFormat("yyyy-MM-dd");
-            Date inputDate = null;//Este método lança ParseException, colocar dentro de try/catch
-            try {
-                inputDate = simpleDateFormatInput.parse(statement.getDate());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            String userNow = statement.getIdFrom();
-            idUserFrom =  MySharedPreferences.getPreferences(view.getContext(),"id");
-            String formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(inputDate);
-            if(userNow.equals(idUserFrom)){
-                tipo = "Trasferência Enviada";
-            }else{
-                tipo = "Transferencia recebida";
-            }
-
-            holder.date.setText(formattedDate);
-            holder.value.setText(statement.getValue());
-            holder.type.setText(tipo);
-        return view;
-    }
-
-    private class ViewHolder{
+    private class MyViewHolder extends RecyclerView.ViewHolder{
         TextView date;
         TextView value;
         TextView type;
 
-
-        public ViewHolder(View view) {
+        MyViewHolder(View view) {
+            super(view);
             date = view.findViewById(R.id.custom_list_statement_date);
             value = view.findViewById(R.id.custom_list_statement_id_from_value);
             type =  view.findViewById(R.id.custom_list_statement_type);
 
         }
-
-
-
-
 
     }
 

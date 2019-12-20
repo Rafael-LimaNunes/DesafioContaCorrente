@@ -6,11 +6,11 @@ public class LoginContract{
 
     public interface View{
         void logInto();
-        void invalid(String fail);
         void initializeViews();
         void setListeners();
         Context getContext();
         void noConnection(String noConnection);
+        void errorMessage(String error);
     }
 
     public interface Presenter{

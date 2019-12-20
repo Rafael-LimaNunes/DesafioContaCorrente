@@ -4,11 +4,11 @@ package com.example.desafiocontacorrente.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,7 +26,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private FrameLayout contaner;
     private ActionBarDrawerToggle toggle;
 
     @Override
@@ -53,7 +52,9 @@ public class MainActivity extends RootActivity implements MainContract.View {
 
     public void setTitleToolbar(String title) {
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(title);
+        if (actionbar != null) {
+            actionbar.setTitle(title);
+        }
     }
 
     @Override
@@ -65,7 +66,6 @@ public class MainActivity extends RootActivity implements MainContract.View {
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        contaner = findViewById(R.id.nav_host_fragment);
     }
 
 
@@ -75,25 +75,22 @@ public class MainActivity extends RootActivity implements MainContract.View {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_statement: {
-                        changeFragment(new BankStatementFragment());
-                        break;
-                    }
-                    case R.id.nav_transfer: {
-                        changeFragment(new TransferFragment());
-                        break;
-                    }
-                    case R.id.nav_exit: {
-                        finish();
-                        break;
-                    }
-                    default: return true;
-                } return true;
-            }
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_statement: {
+                    changeFragment(new BankStatementFragment());
+                    break;
+                }
+                case R.id.nav_transfer: {
+                    changeFragment(new TransferFragment());
+                    break;
+                }
+                case R.id.nav_exit: {
+                   showExitAlert();
+                    break;
+                }
+                default: return true;
+            } return true;
         });
 
     }
@@ -130,7 +127,7 @@ public class MainActivity extends RootActivity implements MainContract.View {
             if(!(fragmentActual instanceof HomeFragment)){
                 changeFragment(new HomeFragment());
             }else{
-                showExitAlert(this);
+                showExitAlert();
             }
         }else{
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -141,8 +138,8 @@ public class MainActivity extends RootActivity implements MainContract.View {
      * Handle clicks on toolbar icons
      * if current fragment is HomeFragment, open DrawerLayout
      * of any  other fragment, call onBackPressed() returning to HomeFragment
-     * @param item
-     * @return
+     * @param item is which menuItem was clicked
+     * @return the super method
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -156,5 +153,17 @@ public class MainActivity extends RootActivity implements MainContract.View {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showExitAlert(){
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_exit));
+        builder.setMessage(R.string.exit_message);
+        builder.setPositiveButton(R.string.dialog_yes, (dialog, which) -> finish());
+        builder.setNegativeButton(R.string.dialog_no, (dialog, which) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 }

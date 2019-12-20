@@ -10,7 +10,6 @@ public class StatementContract{
         Context getContext();
         void showList(List list);
         void initializeViews();
-        void bindEmpty();
         void showErrorMessage(String error);
     }
 

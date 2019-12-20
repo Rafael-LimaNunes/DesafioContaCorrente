@@ -1,9 +1,5 @@
 package com.example.desafiocontacorrente.contracts;
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import com.example.desafiocontacorrente.model.User;
 
 public class HomeContract {

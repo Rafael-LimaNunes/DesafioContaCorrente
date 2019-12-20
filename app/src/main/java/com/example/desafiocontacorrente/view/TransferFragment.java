@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -18,22 +17,22 @@ import com.example.desafiocontacorrente.extras.RootFragment;
 import com.example.desafiocontacorrente.presenter.TransferPresenter;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 public class TransferFragment extends RootFragment implements TransferContract.View {
-    EditText edEmailTrasnfer;
-    EditText edValueTransfer;
-    Button btnValueTransfer;
-    TransferPresenter presenter;
-    View view;
+    private EditText edEmailTrasnfer;
+    private EditText edValueTransfer;
+    private Button btnValueTransfer;
+    private TransferPresenter presenter;
+    private View view;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         presenter = new TransferPresenter(this);
          view = inflater.inflate(R.layout.fragment_transfer, container, false);
-        ((MainActivity)getActivity()).lockDL(true);
+        ((MainActivity) Objects.requireNonNull(getActivity())).lockDL(true);
 
-        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v ->{
-            getActivity().onBackPressed();
-        });
+        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
          initializeViews();
         return view;
@@ -44,7 +43,7 @@ public class TransferFragment extends RootFragment implements TransferContract.V
         super.onResume();
         setListeners();
         setBackButton(true);
-        ((MainActivity)getActivity()).lockDL(true);
+        ((MainActivity) Objects.requireNonNull(getActivity())).lockDL(true);
     }
 
     @Override
@@ -59,21 +58,14 @@ public class TransferFragment extends RootFragment implements TransferContract.V
         btnValueTransfer.setOnClickListener(v -> presenter.confirmData(edEmailTrasnfer.getText().toString(),edValueTransfer.getText().toString()));
     }
 
-    @Override
-    public void transferSuccessfully() {
-        Toast.makeText(this.getContext(),"Transfer Successfully", Toast.LENGTH_LONG).show();
-    }
-
     public void showDialog(String nameFrom, String nameTO,String value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getActivity().getString(R.string.transfer_title));
+        builder.setTitle(Objects.requireNonNull(getActivity()).getString(R.string.transfer_title));
         builder.setMessage("Valor enviado: R$ "+ value + "\nDe: " + nameFrom + "\nPara: " + nameTO);
         builder.setNeutralButton("Voltar", (dialog, which) -> changeFragment(new HomeFragment()));
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 
     @Override
     public void displayErrorMessage(String error) {

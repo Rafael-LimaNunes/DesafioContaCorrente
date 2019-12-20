@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.desafiocontacorrente.R;
@@ -16,15 +17,15 @@ import com.example.desafiocontacorrente.presenter.StatementPresenter;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class BankStatementFragment extends RootFragment implements StatementContract.View {
 
-    private ListView lvStatement;
     private View view;
-    private CustomAdapter adapter;
     private StatementPresenter presenter;
     private SwipeRefreshLayout swipeRefreshLayoutStatement;
+    private RecyclerView rvStatement;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,11 +33,9 @@ public class BankStatementFragment extends RootFragment implements StatementCont
         initializeViews();
         setListeners();
         setTitle(getString(R.string.menu_statement));
-        ((MainActivity)getActivity()).lockDL(true);
+        ((MainActivity) Objects.requireNonNull(getActivity())).lockDL(true);
 
-        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v ->{
-            getActivity().onBackPressed();
-        });
+        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
         presenter = new StatementPresenter(this);
         return view;
@@ -55,29 +54,27 @@ public class BankStatementFragment extends RootFragment implements StatementCont
         super.onResume();
         presenter.getBankStatement();
         setBackButton(true);
-        ((MainActivity)getActivity()).lockDL(true);
+        ((MainActivity) Objects.requireNonNull(getActivity())).lockDL(true);
     }
     @Override
     public void showList(List list) {
-        adapter = new CustomAdapter(list,getActivity());
-        lvStatement.setAdapter(adapter);
+
+        CustomAdapter adapter = new CustomAdapter(list, getActivity());
+        rvStatement.setAdapter(adapter);
+        RecyclerView.LayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvStatement.setLayoutManager(layout);
     }
 
     @Override
     public void initializeViews() {
-        lvStatement = view.findViewById(R.id.lvStatement);
+        rvStatement = view.findViewById(R.id.rvStatement);
         swipeRefreshLayoutStatement = view.findViewById(R.id.swipeRefreshStatement);
-
-        ((MainActivity)getActivity()).lockDL(true);
-    }
-
-    @Override
-    public void bindEmpty() {
+        ((MainActivity) Objects.requireNonNull(getActivity())).lockDL(true);
     }
 
     @Override
     public void showErrorMessage(String error) {
-        Snackbar.make(lvStatement,error,Snackbar.LENGTH_LONG).show();
+        Snackbar.make(rvStatement,error,Snackbar.LENGTH_LONG).show();
 
 
     }

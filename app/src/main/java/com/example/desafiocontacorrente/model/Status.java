@@ -11,7 +11,4 @@ public class Status implements Serializable {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }

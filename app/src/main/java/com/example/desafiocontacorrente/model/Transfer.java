@@ -2,6 +2,8 @@ package com.example.desafiocontacorrente.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Transfer {
     @SerializedName("status") boolean status;
 
@@ -9,10 +11,7 @@ public class Transfer {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
+    @NotNull
     @Override
     public String toString() {
         return "Transfer{" +

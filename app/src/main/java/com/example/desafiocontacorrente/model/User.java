@@ -2,6 +2,8 @@ package com.example.desafiocontacorrente.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class User {
     @SerializedName("id") String id;
     @SerializedName("name") String name;
@@ -29,18 +31,11 @@ public class User {
         return profile;
     }
 
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
     public String getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
-        this.balance = balance;
-    }
-
+    @NotNull
     @Override
     public String toString() {
         return "nome: " + name + "\nemail: " + email;

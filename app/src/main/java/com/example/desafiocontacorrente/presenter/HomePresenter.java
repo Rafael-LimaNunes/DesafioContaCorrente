@@ -7,7 +7,7 @@ import com.example.desafiocontacorrente.model.User;
 
 public class HomePresenter implements HomeContract.Presenter {
 
-    HomeContract.View view;
+    private HomeContract.View view;
 
     public HomePresenter(HomeContract.View view) {
         this.view = view;

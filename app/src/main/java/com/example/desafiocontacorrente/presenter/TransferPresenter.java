@@ -1,8 +1,5 @@
 package com.example.desafiocontacorrente.presenter;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.api.ServiceAccountAPI;
 import com.example.desafiocontacorrente.api.ServiceAccountApImpl;
@@ -13,7 +10,7 @@ import com.example.desafiocontacorrente.model.Transfer;
 import com.example.desafiocontacorrente.model.User;
 
 public class TransferPresenter implements TransferContract.Presenter {
-    TransferContract.View view;
+    private TransferContract.View view;
     private String emailFrom;
     private User userFrom = null;
     private User userTo = null;
@@ -28,7 +25,7 @@ public class TransferPresenter implements TransferContract.Presenter {
     public void transfer(double value) {
         if(Double.parseDouble(userFrom.getBalance()) > value) {
             ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
-            if(! new Connection().isConnected(view.getContext())) {
+            if(new Connection().isConnected(view.getContext())) {
                 view.displayErrorMessage(String.valueOf(R.string.noConnection));
             }else{
                 serviceAccountAp.transfer(Integer.parseInt(userFrom.getId()), Integer.parseInt(userTo.getId()), value, new ServiceAccountAPI.CallBack<Transfer>() {
@@ -62,7 +59,7 @@ public class TransferPresenter implements TransferContract.Presenter {
         if(emailTo.isEmpty()|| value.isEmpty()){
             view.displayErrorMessage(String.valueOf(R.string.empty_fields));
         }else {
-            if(!new Connection().isConnected(view.getContext())){
+            if(new Connection().isConnected(view.getContext())){
                 view.displayErrorMessage(String.valueOf(R.string.noConnection));
             }else {
                 serviceAccountAp.getUserData(emailFrom, new ServiceAccountAPI.CallBack<User>() {
@@ -82,7 +79,7 @@ public class TransferPresenter implements TransferContract.Presenter {
                     }
                 });
             }
-            if(!new Connection().isConnected(view.getContext())){
+            if(new Connection().isConnected(view.getContext())){
                 view.displayErrorMessage(String.valueOf(R.string.noConnection));
             }else {
                 serviceAccountAp.getUserData(emailTo, new ServiceAccountAPI.CallBack<User>() {

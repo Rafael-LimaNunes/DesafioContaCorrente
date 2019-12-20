@@ -8,7 +8,6 @@ public class TransferContract {
         Context getContext();
         void initializeViews();
         void setListeners();
-        void transferSuccessfully();
         void showDialog(String nameFrom, String nameTO,String value);
         void displayErrorMessage(String invalid);
     }

@@ -2,8 +2,6 @@ package com.example.desafiocontacorrente.presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
-
 import com.example.desafiocontacorrente.api.ServiceAccountAPI;
 import com.example.desafiocontacorrente.api.ServiceAccountApImpl;
 import com.example.desafiocontacorrente.contracts.StatementContract;
@@ -12,8 +10,7 @@ import com.example.desafiocontacorrente.model.Statement;
 import java.util.List;
 
 public class StatementPresenter implements StatementContract.Presenter {
-    StatementContract.View view;
-    private String idUser;
+    private StatementContract.View view;
 
     public StatementPresenter(StatementContract.View view) {
         this.view = view;
@@ -23,8 +20,8 @@ public class StatementPresenter implements StatementContract.Presenter {
     public void getBankStatement() {
         ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
         SharedPreferences preferences = view.getContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
-        idUser = preferences.getString("id","não encontrado");
-        serviceAccountAp.getBankStatement("2", new ServiceAccountAPI.CallBack<List<Statement>>() {
+        String idUser = preferences.getString("id", "não encontrado");
+        serviceAccountAp.getBankStatement(idUser, new ServiceAccountAPI.CallBack<List<Statement>>() {
             @Override
             public void onLoaded(List statements) {
                 view.showList(statements);

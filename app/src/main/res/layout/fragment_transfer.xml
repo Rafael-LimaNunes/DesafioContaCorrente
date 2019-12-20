@@ -23,7 +23,9 @@
         app:layout_constraintBottom_toTopOf="@+id/edValueTransfer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints=""
+        tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/edValueTransfer"
@@ -36,13 +38,14 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
-        android:hint=" enter transfer amount"
+        android:hint="@string/enter_transfer_amount"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/btnTransferValure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edEmailTransfer" />
+        app:layout_constraintTop_toBottomOf="@+id/edEmailTransfer"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btnTransferValure"
@@ -54,7 +57,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Transfer"
+        android:text="@string/transfer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

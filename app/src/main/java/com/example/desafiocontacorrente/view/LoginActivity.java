@@ -14,6 +14,7 @@ import com.example.desafiocontacorrente.contracts.LoginContract;
 import com.example.desafiocontacorrente.extras.MySharedPreferences;
 import com.example.desafiocontacorrente.presenter.LoginPresenter;
 import com.google.android.material.snackbar.Snackbar;
+import java.util.Objects;
 
 /**
  * @author Rafael Lima Nunues de Oliveira
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         presenter = new LoginPresenter(this);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         initializeViews();
         setListeners();
 
@@ -45,10 +46,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    public void invalid(String fail){
-        Snackbar.make(btnEnter,fail,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -71,8 +68,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void noConnection(String noConnection) {
-        Toast.makeText(this,"Sem conexao",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"No connection",Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void errorMessage(String error) {
+            Snackbar.make(btnEnter,error,Snackbar.LENGTH_LONG).show();
+        }
 
 
 }

@@ -14,18 +14,22 @@ import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.view.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 public class RootFragment extends Fragment {
 
-    private ActionBar actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+
+        ActionBar actionBar = ((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
         actionBarDrawerToggle = ((MainActivity)getActivity()).getToggle();
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 
@@ -46,14 +50,13 @@ public class RootFragment extends Fragment {
     }
 
     protected void changeFragment(Fragment fragment){
-        if(getActivity() instanceof MainActivity) {
+        if(getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).changeFragment(fragment);
-        }
     }
 
     @Override
     public Context getContext() {
-        return getActivity().getApplicationContext();
+        return Objects.requireNonNull(getActivity()).getApplicationContext();
     }
 
 

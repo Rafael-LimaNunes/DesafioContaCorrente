@@ -19,14 +19,21 @@
     <string name="dialog_exit">Sair</string>
     <string name="dialog_yes">Sim</string>
     <string name="dialog_no">Não</string>
-    <string name="exit_mensage">Deseja realmente sair?</string>
+    <string name="exit_message">Deseja realmente sair?</string>
     <string name="title_home">Minha Conta</string>
-    <string name="error_transfer">Insufficient balance or invalid email.</string>
-    <string name="transfer_title">Transfer successfully</string>
-    <string name="noConnection_transfer">no connection to transfer.</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_transfer">Saldo insuficiente ou email inválido</string>
+    <string name="noConnection_transfer">Sem conexão para transferir</string>
     <string name="empty_fields">Os campos não podem ficar vazios</string>
     <string name="error_update">Erro ao atualizar os dados</string>
     <string name="error_onTransfer">Erro ao transferir</string>
     <string name="error_statement">Erro ao carregar o extrato.</string>
+    <string name="login_or_password__incorrect">Login ou senha inválido</string>
+    <string name="transfer">Transfer</string>
+    <string name="enter_transfer_amount">Coloque o valor que deseja trnsferir</string>
+    <string name="exit_button">Sair</string>
+    <string name="transfer_button">Transferência</string>
+    <string name="statement_button">Extrato</string>
+    <string name="balance_hint">Balance</string>
+    <string name="name_hint">Name</string>
+    <string name="transfer_title">Transferência</string>
 </resources>

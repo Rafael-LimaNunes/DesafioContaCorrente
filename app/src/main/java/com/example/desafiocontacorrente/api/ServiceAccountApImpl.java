@@ -1,12 +1,12 @@
 package com.example.desafiocontacorrente.api;
 
-import android.content.Context;
-
 import com.example.desafiocontacorrente.R;
 import com.example.desafiocontacorrente.model.Statement;
 import com.example.desafiocontacorrente.model.Status;
 import com.example.desafiocontacorrente.model.Transfer;
 import com.example.desafiocontacorrente.model.User;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.example.desafiocontacorrente.R.string.invalid;
 
 public class ServiceAccountApImpl implements ServiceAccountAPI{
     private RetrofitEndPoint retrofitEndPoint;
@@ -34,7 +32,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
                 if(response.code() ==200) {
                     callBack.onLoaded(status);
                 }else{
-                    callBack.onFailed(String.valueOf(invalid));
+                    callBack.onFailed("problem with api, try later");
                 }
             }
             @Override
@@ -51,7 +49,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
         Call<User> call = retrofitEndPoint.getUser(email);
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NotNull Call<User> call, Response<User> response) {
                 if (response.code() == 200) {
                     User user = response.body();
                     callBack.onLoaded(user);
@@ -61,7 +59,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
                 }
             }
             @Override
-            public void onFailure(Call<User> call, Throwable throwable) {
+            public void onFailure(@NotNull Call<User> call, Throwable throwable) {
                    callBack.noConnection(throwable.getMessage());
             }
         });
@@ -82,7 +80,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
             }
 
             @Override
-            public void onFailure(Call<List<Statement>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<Statement>> call, Throwable t) {
                 callback.onFailed("Bacon");
             }
         });
@@ -93,7 +91,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
             Call<Transfer> call = retrofitEndPoint.transfer(idUserFrom, idUserTo,valueTransfer);
             call.enqueue(new Callback<Transfer>() {
                 @Override
-                public void onResponse(Call<Transfer> call, Response<Transfer> response) {
+                public void onResponse(@NotNull Call<Transfer> call, Response<Transfer> response) {
                     if(response.code()==200){
                         Transfer transfer = response.body();
                         callBack.onLoaded(transfer);
@@ -101,7 +99,7 @@ public class ServiceAccountApImpl implements ServiceAccountAPI{
                 }
 
                 @Override
-                public void onFailure(Call<Transfer> call, Throwable t) {
+                public void onFailure(@NotNull Call<Transfer> call, Throwable t) {
                     callBack.onFailed("Se conexão para Extrato");
                 }
             });

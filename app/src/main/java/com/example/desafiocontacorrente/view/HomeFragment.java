@@ -1,5 +1,6 @@
 package com.example.desafiocontacorrente.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import com.example.desafiocontacorrente.extras.RootFragment;
 import com.example.desafiocontacorrente.model.User;
 import com.example.desafiocontacorrente.presenter.HomePresenter;
 
+import java.util.Objects;
+
 public class HomeFragment extends RootFragment implements HomeContract.View {
     private TextView tvName;
     private TextView tvBalance;
@@ -32,26 +35,20 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
     private Button btnExit;
     private View view;
     private String email;
-    private View container;
-    private TextView tvDrawerName;
-    private TextView tvDrawerEmail;
-    private ImageView ivDrawerProfile;
+
     private SwipeRefreshLayout swipeRefreshLayout;
-    private SharedPreferences preferences;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        preferences = getActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         email = preferences.getString("email","não encontrado");
         setTitle(getString(R.string.title_home));
         initializeViews();
         ((MainActivity)getActivity()).lockDL(false);
 
-        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v ->{
-            ((MainActivity) getActivity()).getDrawerLayout().openDrawer(GravityCompat.START);
-        });
+        ((MainActivity) getActivity()).getToolbar().setNavigationOnClickListener(v -> ((MainActivity) getActivity()).getDrawerLayout().openDrawer(GravityCompat.START));
         presenter = new HomePresenter(this);
         return view;
 
@@ -70,22 +67,23 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
         Toast.makeText(view.getContext(), noConnection, Toast.LENGTH_LONG).show();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showUserInformation(User user) {
         tvName.setText(user.getName());
         tvBalance.setText("R$: " + user.getBalance());
 
-        tvDrawerName = getActivity().findViewById(R.id.tvDrawerName);
+        TextView tvDrawerName = Objects.requireNonNull(getActivity()).findViewById(R.id.tvDrawerName);
         tvDrawerName.setText(user.getName());
 
-        tvDrawerEmail = getActivity().findViewById(R.id.tvDrawerEmail);
+        TextView tvDrawerEmail = getActivity().findViewById(R.id.tvDrawerEmail);
         tvDrawerEmail.setText(user.getEmail());
 
-        ivDrawerProfile = getActivity().findViewById(R.id.ivDrawerProfile);
+        ImageView ivDrawerProfile = getActivity().findViewById(R.id.ivDrawerProfile);
         Glide.with(getActivity())
                 .load(user.getProfile())
                 .into(ivDrawerProfile);
-        MySharedPreferences.setPreferences(getContext(),"id",user.getId());
+        MySharedPreferences.setPreferences(Objects.requireNonNull(getContext()),"id",user.getId());
 
     }
 
@@ -96,7 +94,6 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
         btnStatement = view.findViewById(R.id.btnStatement);
         btnTransfer = view.findViewById(R.id.btnTransfer);
         btnExit = view.findViewById(R.id.btnExit);
-        container = view.findViewById(R.id.nav_host_fragment);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshHome);
 
 
@@ -107,7 +104,7 @@ public class HomeFragment extends RootFragment implements HomeContract.View {
 
         btnTransfer.setOnClickListener(v -> changeFragment(new TransferFragment()));
 
-        btnExit.setOnClickListener(v -> ((MainActivity)getActivity()).showExitAlert(getActivity()) );
+        btnExit.setOnClickListener(v -> ((MainActivity) Objects.requireNonNull(getActivity())).showExitAlert() );
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             presenter.getUser(email);

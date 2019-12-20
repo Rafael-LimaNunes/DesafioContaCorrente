@@ -22,6 +22,4 @@ public class MainContract {
 
     }
 
-    public interface Presenter{
-    }
 }

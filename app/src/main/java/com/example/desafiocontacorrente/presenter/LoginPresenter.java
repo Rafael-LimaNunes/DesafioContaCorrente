@@ -1,7 +1,5 @@
 package com.example.desafiocontacorrente.presenter;
 
-import android.content.SharedPreferences;
-
 import com.example.desafiocontacorrente.api.ServiceAccountAPI.CallBack;
 import com.example.desafiocontacorrente.api.ServiceAccountApImpl;
 import com.example.desafiocontacorrente.contracts.LoginContract;
@@ -12,18 +10,14 @@ import com.example.desafiocontacorrente.model.Status;
  */
 public class LoginPresenter implements LoginContract.Presenter {
 
-    LoginContract.View view;
+    private LoginContract.View view;
 
 
     public LoginPresenter(LoginContract.View view) {
         this.view = view;
     }
 
-    /**
-     *
-     * @param email
-     * @param password
-     */
+
     @Override
     public void authenticate(String email, String password) {
         ServiceAccountApImpl serviceAccountAp = new ServiceAccountApImpl();
@@ -32,18 +26,20 @@ public class LoginPresenter implements LoginContract.Presenter {
             public void onLoaded(Status o) {
                 if (o.getStatus()) {
                     view.logInto();
+                }else{
+                    view.errorMessage("Login ou usuário inválido");
                 }
             }
 
             @Override
             public void onFailed(String fail) {
-                view.invalid(fail);
+                view.errorMessage(fail);
 
             }
 
             @Override
             public void noConnection(String noConnection) {
-                view.noConnection(noConnection);
+                view.errorMessage(noConnection);
             }
         });
     }
